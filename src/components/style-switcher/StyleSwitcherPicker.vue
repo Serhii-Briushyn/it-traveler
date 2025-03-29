@@ -1,7 +1,5 @@
 <script setup>
-import { ref, watchEffect, onMounted, onUnmounted } from 'vue'
-
-const isOpen = ref(false)
+import { onMounted, ref, watch } from 'vue'
 
 const colors = [
   { name: 'Orange', main: '--color-orange', light: '--color-orange-light' },
@@ -22,56 +20,44 @@ const changeColor = (color) => {
   selectedLightColor.value = color.light
 
   document.documentElement.style.setProperty('--color-accent', `var(${color.main})`)
-  document.documentElement.style.setProperty('--color-background-button', `var(${color.light})`)
+  document.documentElement.style.setProperty('--color-accent-light', `var(${color.light})`)
 
   localStorage.setItem('selectedColor', color.main)
   localStorage.setItem('selectedLightColor', color.light)
-
-  isOpen.value = false
-}
-
-const clickOutside = (event) => {
-  if (!event.target.closest('.color-picker')) {
-    isOpen.value = false
-  }
 }
 
 onMounted(() => {
-  document.addEventListener('click', clickOutside)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('click', clickOutside)
-})
-
-watchEffect(() => {
   document.documentElement.style.setProperty('--color-accent', `var(${selectedColor.value})`)
   document.documentElement.style.setProperty(
-    '--color-background-button',
+    '--color-accent-light',
+    `var(${selectedLightColor.value})`,
+  )
+})
+
+watch([selectedColor, selectedLightColor], () => {
+  document.documentElement.style.setProperty('--color-accent', `var(${selectedColor.value})`)
+  document.documentElement.style.setProperty(
+    '--color-accent-light',
     `var(${selectedLightColor.value})`,
   )
 })
 </script>
 
 <template>
-  <div class="absolute top-6 right-6 color-picker">
-    <div
-      class="w-10 h-10 rounded-full cursor-pointer"
-      :style="{ backgroundColor: `var(${selectedColor})` }"
-      @click="isOpen = !isOpen"
-    ></div>
-
-    <div
-      v-if="isOpen"
-      class="absolute top-12 left-0 flex flex-col gap-1 transition-all duration-300"
+  <ul class="grid grid-cols-3 gap-2">
+    <li
+      v-for="color in colors"
+      :key="color.main"
+      class="group cursor-pointer rounded-md border border-solid border-gray-700 p-1.5"
+      :class="{ 'bg-gray-700': selectedColor === color.main }"
+      @click="changeColor(color)"
     >
-      <div
-        v-for="color in colors"
-        :key="color.main"
-        class="w-10 h-10 rounded-full cursor-pointer transition-all duration-300 hover:scale-105"
-        :style="{ backgroundColor: `var(${color.main})` }"
-        @click="changeColor(color)"
-      ></div>
-    </div>
-  </div>
+      <svg
+        class="h-8 w-8 transition-all duration-200 ease-in group-hover:scale-110"
+        :style="{ fill: `var(${color.main})` }"
+      >
+        <use xlink:href="/sprite.svg#icon-map-pin"></use>
+      </svg>
+    </li>
+  </ul>
 </template>

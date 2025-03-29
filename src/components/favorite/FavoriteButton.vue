@@ -1,5 +1,5 @@
 <template>
-  <button class="cursor-pointer">
+  <button class="group cursor-pointer">
     <slot></slot>
   </button>
 </template>

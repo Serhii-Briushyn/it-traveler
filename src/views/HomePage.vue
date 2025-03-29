@@ -1,23 +1,31 @@
 <script setup>
-import IButton from '@/components/IButton/IButton.vue'
+import IButton from 'components/ui/IButton.vue'
 </script>
 
 <template>
-  <main class="flex h-screen">
-    <section class="flex-1 flex justify-center items-center bg-accent">
-      <div class="text-white text-center max-w-[570px]">
-        <img class="inline mb-6" src="../assets/img/map-pin.svg" alt="Map pin" />
-        <h1 class="font-bold text-4xl mb-7">IT traveler</h1>
-        <p class="text-lg tracking-tight mb-11">
+  <section
+    class="desktop:flex-row dark:bg-theme-dark desktop:max-h-page-height desktop:h-screen container flex flex-col overflow-hidden bg-white"
+  >
+    <div
+      class="bg-accent dark:bg-theme-dark-light tablet:p-24 flex basis-1/2 items-center justify-center px-8 py-16"
+    >
+      <div class="text-center text-white">
+        <img class="mb-6 inline" src="../assets/img/map-pin.svg" alt="Map pin" />
+        <h1 class="mb-7 text-4xl font-bold">IT traveler</h1>
+        <p class="mb-11 text-lg tracking-tight">
           A simple and convenient web application that will allow you to mark your favorite places,
           as well as those you would really like to visit. So don't hesitate and try it for
           yourself.
         </p>
-        <IButton variant="secondary">Get started</IButton>
+        <IButton variant="primary">Get started</IButton>
       </div>
-    </section>
-    <section class="flex-1">
-      <img class="h-full object-cover" src="../assets/img/static-map.png" alt="Map image" />
-    </section>
-  </main>
+    </div>
+    <div class="basis-1/2">
+      <img
+        class="h-auto w-full object-cover object-bottom"
+        src="../assets/img/static-map.png"
+        alt="Map image"
+      />
+    </div>
+  </section>
 </template>
